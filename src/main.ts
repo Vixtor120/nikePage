@@ -1,10 +1,17 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
+import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
-import { routes } from './app/app.routes';
+import { importProvidersFrom } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
-bootstrapApplication(AppComponent, {
+// Add HttpClientModule to the providers
+const updatedConfig = {
+  ...appConfig,
   providers: [
-    provideRouter(routes), // Configura las rutas
-  ],
-}).catch((err) => console.error(err));
+    ...appConfig.providers,
+    importProvidersFrom(HttpClientModule)
+  ]
+};
+
+bootstrapApplication(AppComponent, updatedConfig)
+  .catch((err) => console.error(err));
